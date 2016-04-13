@@ -1,0 +1,89 @@
+Closures in Java Script:
+What is Closures?
+Closure is a snapshot of a function and the environment in which it was created. The environment contains the local variables created inside it and the arguments passed to it.
+We can say that its a special type of objects that combine a function ad environment variables.
+Where is it used?
+It is mostly used in the Modular Design Patter. Modular design pattern allows to have private implementation in a functional literal along with public interfaces.
+
+funA = (function(){
+	// private function implementation
+	var privateFunc = function(){
+		alert("Hi! I am a private function !");
+	}
+	// public interface
+	return {
+		publicFunc : function(){
+			privateFunc();
+		}
+	}
+})();
+
+Calling the privateFunc of funA literal:
+funA.publicFunc();
+// Throw alert: "Hi! I am a private function !".
+
+Closure Example :
+Lets create an HTML and have a Click Me button on it.
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Closures in JavaScript !</title>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+  <script type="text/javascript" src="myJavaScript.js"></script>
+</head>
+<body>
+  <h1>Test</h1>
+
+  <p>  <input type="submit" id = "button" value="Press"" /></p>
+
+</body>
+</html>
+
+The button has an id, "button" and a value as "Press".
+
+Now lets add code to display a message when that button is pressed.
+Lets create a self invoking function in our JavaScript file:
+
+$(function() {
+
+  function pressMe() {  
+    var msg = "Hello ! How are you !!";  
+    function displayMessage() { 
+      alert(msg);  
+    }  
+    displayMessage();// calls the displayMessage function
+  }
+  // add the click event of the button
+  // When the button is clicked, call pressMe function
+  $('#button').click(function() {
+    pressMe();
+  });
+   
+});
+
+We have added a self invoking function and it will call pressMe function inside it which will further call the displayMessage() function with a message.
+Inside the pressMe() we are explicitly calling the displayMessage() function, which displays an alert.
+With the help of closure we can instead, return the displayMessage() function which wil bind the environment(i.e. the local variable 'msg' in this case) with itself.
+Let add the code for the closure:
+
+$(function() {
+  function pressMe() {
+    var msg= "Hello! How are you today!";
+    function displayMessage() {
+      alert(msg);
+    }
+    // Instead of calling the displayMessage() we are returning it to the calling program. It will wrap the environment variables(msg in this case with itself).
+
+    return displayMessage; // returning the function reference of displayMessage
+  }
+  
+  // add the click event of the button
+  $('#button').click(function() {
+    var myButton = pressMe(); // the returned function(displayMessage) is referenced by myButton 
+    myButton(); // execute myButton to access its contents
+  });
+});
+
+In this way we can call 'myButton' to execute 'displayMessage()' function.
+The code
